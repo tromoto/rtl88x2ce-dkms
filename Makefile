@@ -2344,6 +2344,22 @@ config_r:
 	@echo "make config"
 	/bin/bash script/Configure script/config.in
 
+DRIVER_VERSION = $(shell grep "\#define DRIVERVERSION" include/rtw_version.h | awk '{print $$3}' | tr -d v\")
+
+dkms_install:
+	cp rtl88x2ce-dkms/rtw88_blacklist.conf /etc/modprobe.d/rtw88_blacklist.conf
+	cp rtl88x2ce-dkms/rtw88_pci.conf /etc/modprobe.d/
+	cp rtl88x2ce-dkms/default-wifi-powersave-on.conf /etc/NetworkManager/conf.d/
+	@mkdir -vp /usr/src/rtl88x2ce-$(DRIVER_VERSION)
+	cp -r * /usr/src/rtl88x2ce-$(DRIVER_VERSION)
+	dkms add -m rtl88x2ce -v $(DRIVER_VERSION)
+	+ dkms build -m rtl88x2ce -v $(DRIVER_VERSION)
+	dkms install -m rtl88x2ce -v $(DRIVER_VERSION)
+	dkms status -m rtl88x2ce
+
+dkms_remove:
+	dkms remove rtl88x2ce/$(DRIVER_VERSION) --all
+	rm -rf /usr/src/rtl88x2ce-$(DRIVER_VERSION)
 
 .PHONY: modules clean
 
