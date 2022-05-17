@@ -42,8 +42,9 @@ sudo dkms install -m rtl88x2ce -v 35403
 ```
 
 **After installing the driver:** 
+```
 echo "options rtw88_pci disable_aspm=1" | sudo tee  /etc/modprobe.d/rtw88_pci.conf
-
+```
 *NOTE:* 
 The above should work ok with native ubuntu 20.04.x kernel and driver, i.e. no need to install this driver.
 
