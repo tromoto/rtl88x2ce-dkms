@@ -3,6 +3,12 @@ tested on AUSUS TUF A15 series 506 xx
 Ubuntu 20.04.4
 Kernel 5.13.0-41-generic #46~20.04.1-Ubuntu SMP Wed Apr 20 13:16:21 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux  (and earlier versions as well)
 
+NOTE: 
+Native Ubuntu driver might work ok if one fixes the following: 
+```
+echo "options rtw88_pci disable_aspm=1" | sudo tee  /etc/modprobe.d/rtw88_pci.conf
+```
+
 
 ### DKMS
 This driver can be installed using [DKMS]. This is a system which will automatically recompile and install a kernel module when a new kernel gets installed or updated. To make use of DKMS, install the `dkms` package, which on Debian (based) systems is done like this:
@@ -30,7 +36,7 @@ $ make && make install
 
 
 
-### Manual Install
+## Manual Install (if the above fails for some reason)
 ```
 git clone https://github.com/tromoto/rtl88x2ce-dkms.git
 sudo cp rtl88x2ce-dkms/rtw88_blacklist.conf /etc/modprobe.d/rtw88_blacklist.conf
